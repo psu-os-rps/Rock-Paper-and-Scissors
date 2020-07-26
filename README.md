@@ -17,7 +17,7 @@ Rock Paper Scissors implements a fingers count pipeline. In this implementation,
 ## Project Examples
 
 - [Finger Counters in Real Time](https://github.com/psu-os-rps/Rock-Paper-and-Scissors/blob/master/example/Finger%20Count_result.mp4)
--[Background Threshold](https://github.com/psu-os-rps/Rock-Paper-and-Scissors/blob/master/example/Thresholded_result.mp4)
+- [Background Threshold](https://github.com/psu-os-rps/Rock-Paper-and-Scissors/blob/master/example/Thresholded_result.mp4)
 
 
 ## Environment

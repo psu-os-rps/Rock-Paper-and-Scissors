@@ -25,7 +25,13 @@ def calc_accum_avg(frame,accumulated_weight):
 #Function make the program know the hand location and find the contours of the hand
 def segment(frame,threshold_min=22):
     diff = cv2.absdiff(background.astype('uint8'),frame)
-    ret,thresholded = cv2.threshold(diff,threshold_min,255,cv2.THRESH_BINARY)
+    _,thresholded = cv2.threshold(diff,threshold_min,255,cv2.THRESH_BINARY)
+    
+    #Use erode to delete small black threshold then dilate write threshold then.
+    kernel = np.ones((5,5),np.uint8)
+    thresholded = cv2.erode(thresholded,kernel,iterations = 1)
+    thresholded = cv2.dilate(thresholded,kernel,iterations = 2)
+    
     image,contours,hierarchy = cv2.findContours(thresholded.copy(),cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_SIMPLE)
     
     if len(contours) == 0:
@@ -49,7 +55,7 @@ def count_fingers(thresholded,hand_segment):
     
     distance = pairwise.euclidean_distances([(cX, cY)], Y=[left, right, top, bottom])[0]
     max_distance = distance.max()
-    radius = int(0.9*max_distance)
+    radius = int(0.8*max_distance)
     circumfrence = (2*np.pi*radius)
     circular_roi = np.zeros(thresholded.shape[:2], dtype="uint8")
     cv2.circle(circular_roi,(cX,cY),radius,255,10)
@@ -91,6 +97,13 @@ while True:
         if hand is not None:
             thresholded , hand_segment = hand
             
+            # Background Removal
+            fg_mask =  thresholded.astype(np.float32) / 255.0
+            fg_mask = np.stack([fg_mask, ] * 3, axis=2)
+            fg_only = fg_mask * roi.astype(np.float32)
+            # Display the Video after Background remove in real time
+            cv2.imshow('Foreground', fg_only.astype(np.uint8))
+
             cv2.drawContours(frame_copy,[hand_segment+(roi_right,roi_top)],-1,(255,0,0),5)
             fingers = count_fingers(thresholded,hand_segment)
             cv2.putText(frame_copy,str(fingers),(70,50),cv2.FONT_HERSHEY_SIMPLEX,1,(0,0,255),2)
