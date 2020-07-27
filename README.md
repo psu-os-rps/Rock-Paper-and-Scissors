@@ -64,6 +64,7 @@ List the future goals and concerns:
 ### Goals:
 - Background Removal (achieved)
 - erode and dilate threshold (achieved)
+- Next: Change hardcoded parameters to other format with config file or automatic.
 - convex hull replaced (Still find better method to counter fingers numbers)
 - Use Deep Learning method instead of current Algorithm (Dreaming)
 - Build more Detector Features, soundless protector is contributing (Get some ideas, but need more discussion)
