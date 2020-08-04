@@ -2,7 +2,8 @@
 import cv2
 import numpy as np
 from sklearn.metrics import pairwise
-
+import traceback
+version = cv2.__version__
 
 background = None
 accumulated_weight = 0.5
@@ -31,9 +32,14 @@ def segment(frame,threshold_min=22):
     kernel = np.ones((5,5),np.uint8)
     thresholded = cv2.erode(thresholded,kernel,iterations = 1)
     thresholded = cv2.dilate(thresholded,kernel,iterations = 2)
-    
-    image,contours,hierarchy = cv2.findContours(thresholded.copy(),cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_SIMPLE)
-    
+
+
+    if version.startswith("4."):
+        contours, hierarchy = cv2.findContours(thresholded.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    else:
+        image,contours,hierarchy = cv2.findContours(thresholded.copy(),cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_SIMPLE)
+
+
     if len(contours) == 0:
         return None
     else:
@@ -60,8 +66,11 @@ def count_fingers(thresholded,hand_segment):
     circular_roi = np.zeros(thresholded.shape[:2], dtype="uint8")
     cv2.circle(circular_roi,(cX,cY),radius,255,10)
     circular_roi = cv2.bitwise_and(thresholded,thresholded,mask=circular_roi)
-    
-    image,contours,hierarchy = cv2.findContours(circular_roi.copy(),cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_NONE)
+
+    if version.startswith("4."):
+        contours, hierarchy = cv2.findContours(circular_roi.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    else:
+        image,contours,hierarchy = cv2.findContours(circular_roi.copy(),cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_NONE)
     
     count = 0
     
