@@ -1,16 +1,10 @@
-#The library need to support the project
 import cv2
 import numpy as np
 from sklearn.metrics import pairwise
-import traceback
+import config
 version = cv2.__version__
 
 background = None
-accumulated_weight = 0.5
-roi_top = 20
-roi_bottom = 300
-roi_right = 300
-roi_left = 600
 
 #Function calculate the weighted sum of the input image src and the accumulator dst so that dst becomes a running average of a frame sequence
 def calc_accum_avg(frame,accumulated_weight):
@@ -24,16 +18,17 @@ def calc_accum_avg(frame,accumulated_weight):
     cv2.accumulateWeighted(frame,background,accumulated_weight)
 
 #Function make the program know the hand location and find the contours of the hand
-def segment(frame,threshold_min=22):
+def segment(frame,threshold_min):
     diff = cv2.absdiff(background.astype('uint8'),frame)
     _,thresholded = cv2.threshold(diff,threshold_min,255,cv2.THRESH_BINARY)
+    
     
     #Use erode to delete small black threshold then dilate write threshold then.
     kernel = np.ones((5,5),np.uint8)
     thresholded = cv2.erode(thresholded,kernel,iterations = 1)
     thresholded = cv2.dilate(thresholded,kernel,iterations = 2)
-
-
+    
+    #Opencv version causes the function return different values
     if version.startswith("4."):
         contours, hierarchy = cv2.findContours(thresholded.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     else:
@@ -61,12 +56,13 @@ def count_fingers(thresholded,hand_segment):
     
     distance = pairwise.euclidean_distances([(cX, cY)], Y=[left, right, top, bottom])[0]
     max_distance = distance.max()
-    radius = int(0.8*max_distance)
+    radius = int(config.rate*max_distance)
     circumfrence = (2*np.pi*radius)
     circular_roi = np.zeros(thresholded.shape[:2], dtype="uint8")
     cv2.circle(circular_roi,(cX,cY),radius,255,10)
     circular_roi = cv2.bitwise_and(thresholded,thresholded,mask=circular_roi)
 
+    #Opencv version causes the function return different values
     if version.startswith("4."):
         contours, hierarchy = cv2.findContours(circular_roi.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     else:
@@ -91,18 +87,18 @@ num_frames = 0
 while True:
     ret, frame = cam.read()
     frame_copy = frame.copy()
-    roi = frame[roi_top:roi_bottom,roi_right:roi_left]
+    roi = frame[config.roi_top:config.roi_bottom,config.roi_right:config.roi_left]
     gray = cv2.cvtColor(roi,cv2.COLOR_BGR2GRAY)
     gray = cv2.GaussianBlur(gray,(7,7),0)
     
     if num_frames < 60:
-        calc_accum_avg(gray,accumulated_weight)
+        calc_accum_avg(gray,config.accumulated_weight)
         
         if num_frames <= 59:
             cv2.putText(frame_copy,'WAIT. GETTING BACKGROUND',(200,300),cv2.FONT_HERSHEY_SIMPLEX,1,(0,0,255),2)
             cv2.imshow('Finger Count',frame_copy)
     else:
-        hand = segment(gray)
+        hand = segment(gray, config.threshold_min)
         if hand is not None:
             thresholded , hand_segment = hand
             
@@ -113,12 +109,12 @@ while True:
             # Display the Video after Background remove in real time
             cv2.imshow('Foreground', fg_only.astype(np.uint8))
 
-            cv2.drawContours(frame_copy,[hand_segment+(roi_right,roi_top)],-1,(255,0,0),5)
+            cv2.drawContours(frame_copy,[hand_segment+(config.roi_right,config.roi_top)],-1,(255,0,0),5)
             fingers = count_fingers(thresholded,hand_segment)
             cv2.putText(frame_copy,str(fingers),(70,50),cv2.FONT_HERSHEY_SIMPLEX,1,(0,0,255),2)
             cv2.imshow('Thresholded',thresholded)
    
-    cv2.rectangle(frame_copy,(roi_left,roi_top),(roi_right,roi_bottom),(0,0,255),5)
+    cv2.rectangle(frame_copy,(config.roi_left,config.roi_top),(config.roi_right,config.roi_bottom),(0,0,255),5)
     num_frames += 1
     cv2.imshow('Finger Count',frame_copy)
     
