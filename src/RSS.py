@@ -1,4 +1,5 @@
 import cv2
+from datetime import datetime
 import numpy as np
 from sklearn.metrics import pairwise
 import config
@@ -92,11 +93,13 @@ def main():
                 message_result = "Number of Fingers: "+str(counters)
                 cv2.putText(image, message_result, (config.message_x, config.message_y), cv2.FONT_HERSHEY_DUPLEX, config.font_scale,config.text_color, config.thickness)
                 # Display the Video after Background remove in real time
-                cv2.imshow('Foreground', fg_only.astype(np.uint8))
+                cv2.imshow('Background Removel', fg_only.astype(np.uint8))
                 cv2.imshow('Threshholded', thresholded)
 
         frames += 1
         cv2.rectangle(image,(config.detector_l,config.detector_u),(config.detector_r,config.detector_b),config.rectangle_color,config.rectangle_thickness)
+        message_time = str(datetime.now())
+        cv2.putText(image, message_time, (config.date_x, config.date_y), cv2.FONT_HERSHEY_DUPLEX, config.font_scale,config.text_color, config.thickness)
         cv2.imshow('Rock-Paper-and-Scissors',image)
         
         
