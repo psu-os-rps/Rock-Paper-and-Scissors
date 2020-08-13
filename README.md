@@ -39,7 +39,7 @@ Git Clone and run the python file:
 ```shell
 $ git clone https://github.com/psu-os-rps/Rock-Paper-and-Scissors.git
 $ cd Rock-Paper-and-Scissors/src
-$ python main.py
+$ python RSS.py
 ```
 
 IMPORTANT: Please run the program with a camera, otherwise it causes an Error.
