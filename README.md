@@ -48,6 +48,7 @@ IMPORTANT: Please run the program with a camera, otherwise it causes an Error.
 ## Reference:
 
 - [Finger Detection using OpenCV and Python From lzane](https://github.com/lzane/Fingers-Detection-using-OpenCV-and-Python)
+- [hand-gesture-recognition using OpenCV and Python From Aakash Jhawar](https://github.com/aakashjhawar/hand-gesture-recognition)
 - [COVID-19 Face Mask Detector with OpenCV Keras TensorFlow and Deep Learning](https://www.pyimagesearch.com/2020/05/04/covid-19-face-mask-detector-with-opencv-keras-tensorflow-and-deep-learning/)
 - [COVID-19 Face Mask Detector with OpenCV Dataset](https://github.com/prajnasb/observations/tree/master/experiements/data)
 - [OpenCV Documentation](https://opencv-python-tutroals.readthedocs.io/en/latest/py_tutorials/py_tutorials.html)
