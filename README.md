@@ -50,6 +50,7 @@ $ python RSS.py
 ```
 
 IMPORTANT: Please run the program with a camera, otherwise it causes an Error.
+
 Also, you can check our build version files, to make sure project running successful.
 - [For building version checker](https://github.com/psu-os-rps/Rock-Paper-and-Scissors/blob/master/Build%20version%20%26%20Issue%20Tracking.pdf)
 
