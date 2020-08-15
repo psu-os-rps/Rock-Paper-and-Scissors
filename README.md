@@ -14,17 +14,24 @@ Copyright (c) 2020 psu-os-rss
 Rock Paper Scissors implements a fingers count pipeline. In this implementation, the images of a hand in different postures and positions are captured by a camera, and the number of fingers are counted and displayed in real time. Functions including `threshold`, `contours` and `convex hull` as well as the distance calculation function from `sklearn` are utilized.
 
 
-## Project Examples
+## Project Presentation
+The presentation include a PDF file and the corresponding audio file.
+You can download the files Github, or clone to entire project to view the files
 
-- [Finger Counters in Real Time](https://github.com/psu-os-rps/Rock-Paper-and-Scissors/blob/master/example/Finger%20Count_result.mp4)
-- [Background Threshold](https://github.com/psu-os-rps/Rock-Paper-and-Scissors/blob/master/example/Thresholded_result.mp4)
+- [Presentation PPT to PDF](https://github.com/psu-os-rps/Rock-Paper-and-Scissors/blob/master/presentation/Rock%20Paper%20Scissors.pdf)
+- [Presentation with Audio](https://github.com/psu-os-rps/Rock-Paper-and-Scissors/blob/master/presentation/RockPaperScissors_audio%20presentation.m4a)
+
+## Project Examples
+You can download the files Github, or clone to entire project to view the files
+
+- [Finger Counters in Real Time](https://github.com/psu-os-rps/Rock-Paper-and-Scissors/blob/master/example/RockPaperScissorsExamples.mov)
 
 
 ## Environment
 
 - Hardware: local machine with a camera
 - Platform: python 3
-- Libraries: OpenCV, sklearn, numpy.
+- Libraries: OpenCV, datetime, platform, sklearn, numpy.
 
 
 ## Pre-requirements
@@ -66,7 +73,7 @@ List the future goals and concerns:
 ### Goals:
 - Background Removal (achieved)
 - erode and dilate threshold (achieved)
-- Next: Change hardcoded parameters to other format with config file or automatic.
+- Next: Change hardcoded parameters to other format with config file or automatic.(achieved with config file)
 - convex hull replaced (Still find better method to counter fingers numbers)
 - Use Deep Learning method instead of current Algorithm (Dreaming)
 - Build more Detector Features, soundless protector is contributing (Get some ideas, but need more discussion)
